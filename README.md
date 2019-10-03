@@ -122,7 +122,7 @@ const validatePhone = (value, rule) => {
 
 ### 2 bjx-form-item 组件
 
-> bug 在小程序中 下列属性使用动态绑定 如 :label="form.label" 均会出现错误提示，如果label要用到动态绑定，暂时可以使用 label 插槽解决
+> bug 在小程序中 下列属性绑定了变量，并动态改变其值时， 均会出现错误提示，如果label要用到动态绑定，暂时可以使用 label 插槽解决
 
 参数 | 是否必须 | 值类型 | 默认值 | 说明
 ---|---|---|---|---

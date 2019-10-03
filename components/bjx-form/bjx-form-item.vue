@@ -3,12 +3,12 @@
 		<view :class="'label-' + theLabelType" :style="{alignItems: theVerticalAlign}">
 			<view class="item-label" :style="theLabelStyle">
 				<text class="item-required" v-show="theRequired">*</text>
-				<div class="label-con">
+				<view class="label-con">
 					<slot name="label" >
 						<text class="label-text">{{label}}</text>
 						<text class="right" v-if="theLabelType=='block'&&labelRight">{{labelRight}}</text>
 					</slot>
-				</div>
+				</view>
 			</view>
 			<view class="item-con">
 				<slot />
@@ -114,8 +114,9 @@
 			},
 			theLabelStyle() {
 				let width = this.theLabelType!='block' ? this.theLabelWidth : 'auto'
-				let align = this.theLabelType!='block' ? (this.align || this.theForm.align) : ''
-				return `width: ${width}; text-align: ${align}; vertical-align: ${this.verticalAlign};`
+				let aligns = {left: 'flex-start', right: 'flex-end', center: 'center',between: 'space-between'}
+				let align = this.align || this.theForm.align
+				return `width: ${width}; justify-content: ${aligns[align]}; vertical-align: ${this.verticalAlign};`
 			},
 			theVerticalAlign() {
 				let type = {top: 'flex-start', bottom: 'flex-end', center: 'center'}
@@ -178,9 +179,6 @@
 	$color: #F56C6C; // 提示文字颜色
 	.bjx-form-item {
 		// margin-bottom: 10upx;
-		.item-label {
-			
-		}
 		.label-block{
 			.item-label {
 				display:flex;
