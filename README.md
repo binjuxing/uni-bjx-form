@@ -1,16 +1,22 @@
 > 仅在uin-app 的h5 及 微信小程序 做过测试，因为其他的我没用到，就懒得去调试了
+
+
 ## 参数说明
+
 ### 1 bjx-form 组件
+
+> 【校验必须】指需要用到表单数据校验时必须的参数
 
 参数 | 是否必须 | 值类型 | 默认值 | 说明
 ---|---|---|---|---
-form     | 是 | Object |      | 表单数据
-rules    | 是 | Object |      | 表单校验规则，键名应和表单数据保持一致
+ref     |  | String |      | 【校验必须】绑定索引，调用bjx-form 中的校验方法
+form     |  | Object |      | 【校验必须】表单数据
+rules    |  | Object |      | 【校验必须】表单校验规则，键名应和表单数据保持一致
 msg-type |    | String |out | 校验结果提示 out 弹窗提示， in 页面内提示
 label-type |  | String |block | label与内容是否在同一行显示 block 不同行 ， inline 同一行
-label-width |  | Number \| String |block | label宽度,为数字时使用 upx 做单位
+label-width |  | Number \| String |auto | label宽度,为数字时使用 upx 做单位
 align |  |  String |left | label的对其方式  left、right、center等
-report-submit |  |  Boolean |left | 【form自带】是否返回 formId 用于发送模板消息 微信小程序、支付宝小程序可用
+report-submit |  |  Boolean | | 【form自带】是否返回 formId 用于发送模板消息 微信小程序、支付宝小程序可用
 @submit |  |  EventHandle | | 【form自带】携带 form 中的数据触发 submit 事件，event.detail = {value : {'name': 'value'} , formId: ''}，report-submit 为 true 时才会返回 formId
 @reset |  |  EventHandle | | 【form自带】表单重置时会触发 reset 事件
 
@@ -18,7 +24,7 @@ report-submit |  |  Boolean |left | 【form自带】是否返回 formId 用于�
 
 参数 | 是否必须 | 值类型 | 默认值 | 说明
 ---|---|---|---|---
-required    |  | Boolean |      | 是否必填
+required    |  | Boolean |   false   | 是否必填
 msg    |  | String |      | required校验不通过时的提醒文字
 rule |    | Array \| String | | 默认校验规则 下面有详细使用方法
 message |    | String | | 默认校验或自定义校验不通过时的提醒文字
@@ -50,7 +56,7 @@ rule: 'in:a,b,c,0'
 // 可以这样写
 rule: ['type:string','length:6,18']
 // 也可以这样写
-rule: [['type', 'string'],['length,'6,18']]
+rule: [['type', 'string'],['length','6,18']]
 // 还可以这样写
 rule: [['type', 'string'],['length',[6,18]]]
 ```
@@ -164,7 +170,7 @@ export default {
 
 ### 3 组件使用
 
-> 注意 两个组件间的嵌套规则
+> 注意 两个组件间的嵌套规则 bjx-form 组件的ref属性需绑定一个值 如 form
 
 ``` html
 <bjx-form
@@ -194,6 +200,8 @@ export default {
 	methods: {
 		submit() {
 			// 校验表单数据 val 为false 则表明 校验不通过
+			// ref="form"
+			// this.$refs['form'].validate
 			this.$refs.form.validate(val => {
 				console.log(val)
 			})
