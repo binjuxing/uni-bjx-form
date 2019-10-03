@@ -1,7 +1,7 @@
 import validate from './validate.js'
-console.log(validate)
 // 默认校验规则
 const rules = {
+	// 自定义规则
 	...validate,
 	// 数据类型
 	type: function(val, param) {
@@ -61,7 +61,6 @@ const rules = {
 	// 值的范围
 	between: function(val, param) {
 		if(param.length > 1) {
-			console.log(val,param)
 			if(Number(val) < Number(param[0]) || Number(val) > Number(param[1])) {
 				return '应在' + param[0] + '~' + param[1] + '之间'
 			}

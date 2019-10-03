@@ -12,7 +12,7 @@
 ref     |  | String |      | 【校验必须】绑定索引，调用bjx-form 中的校验方法
 form     |  | Object |      | 【校验必须】表单数据
 rules    |  | Object |      | 【校验必须】表单校验规则，键名应和表单数据保持一致
-msg-type |    | String |out | 校验结果提示 out 弹窗提示， in 页面内提示
+msg-type |    | String |out | 校验不通过时的提示 out: 弹窗提示；msg: 消息框提示； in: 页面内提示
 label-type |  | String |block | label与内容是否在同一行显示 block 不同行 ， inline 同一行
 label-width |  | Number \| String |auto | label宽度,为数字时使用 upx 做单位
 align |  |  String |left | label的对其方式  left、right、center等
@@ -122,16 +122,32 @@ const validatePhone = (value, rule) => {
 
 ### 2 bjx-form-item 组件
 
+> bug 在小程序中 下列属性使用动态绑定 如 :label="form.label" 均会出现错误提示，如果label要用到动态绑定，暂时可以使用 label 插槽解决
+
 参数 | 是否必须 | 值类型 | 默认值 | 说明
 ---|---|---|---|---
-label    |  | String |      | 数据字段名称
+label    |  | String |      | 数据字段名称 使用插槽时失效
 prop    |  | String |      | 表单字段
 width |    | Number \| String |auto | form-itme 组件宽度，为数字时使用 upx 做单位
 label-width |  | Number \| String | | label 宽度，,为数字时使用 upx 做单位
-label-right |  | Number \| String | | 当labelType 为 block 时 label 右侧显示的文字 
+label-right |  | Number \| String | | 当labelType 为 block 时 label 右侧显示的文字 使用插槽时失效
 align |  |  String |left | label的对其方式  left、right、center等
 required |  |  Boolean | | 字段名左侧* 是否显示  默认由 校验规则 中的 required 控制
 vertical-align |  | String | center |当labelType 为 inline时 label 与右侧内容 垂直对齐方式 可选值： top \| center \| bottom 
+
+#### 2 label 插槽
+
+``` html
+// 在bjx-form-item组件中定义一个带 slot="label" 属性的元素即可
+// 此时可以使用动态值
+<bjx-form-item label-type="block">
+	<view slot="label">
+		<text>label插槽</text>
+		<button style="float: right;" type="primary" size="mini">按钮</button>
+	</view>
+	<input style="width: 100%;" class="input" name="input" placeholder="label插槽"/>
+</bjx-form-item>
+```
 
 
 ## 使用说明

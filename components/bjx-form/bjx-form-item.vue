@@ -3,14 +3,18 @@
 		<view :class="'label-' + theLabelType" :style="{alignItems: theVerticalAlign}">
 			<view class="item-label" :style="theLabelStyle">
 				<text class="item-required" v-show="theRequired">*</text>
-				<text>{{label}}</text>
-				<text class="right" v-if="theLabelType=='block'&&labelRight">{{labelRight}}</text>
+				<div class="label-con">
+					<slot name="label" >
+						<text class="label-text">{{label}}</text>
+						<text class="right" v-if="theLabelType=='block'&&labelRight">{{labelRight}}</text>
+					</slot>
+				</div>
 			</view>
 			<view class="item-con">
 				<slot />
 			</view>
 		</view>
-		<view class="item-msg" v-if="theForm.msgType!='out'">
+		<view class="item-msg" v-if="theForm.msgType=='in'">
 			{{msg}}
 		</view>
 	</view>
@@ -52,7 +56,7 @@
 			labelRight: {
 				type: String,
 				default: '' // 当labelType 为 block 时 label 右侧显示文字
-			},
+			}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ,
 			required: {
 				type: Boolean,
 				default: false // 字段名左侧* 是否显示  默认由 校验规则 中的 required 控制
@@ -66,7 +70,7 @@
 			return {
 				fontUnit: fontUnit,
 				formField: ['labelType', 'labelWidth', 'align', 'msgType','form','rules'],
-				msg: ''
+				msg: '',
 			}
 		},
 		computed: {
@@ -95,9 +99,12 @@
 				return !isNaN(Number(this.width)) ? this.width + fontUnit : this.width
 			},
 			theLabelWidth(){
-				let width = this.labelWidth || this.theForm.labelWidth
-				if(!isNaN(Number(width))) {
-					width += fontUnit
+				let width = 'auto'
+				if(!this.$slots.label) {
+					width = this.labelWidth || this.theForm.labelWidth
+					if(!isNaN(Number(width))) {
+						width += fontUnit
+					}
 				}
 				return width
 			},
@@ -151,8 +158,13 @@
 				}
 				if(this.msg != '') {
 					if(this.theForm.msgType == 'out') {
-						uni.showModal({
-							content: this.msg
+						// 弹框
+						uni.showModal({ content: this.msg })
+					}else if(this.theForm.msgType == 'msg'){
+						// 消息框
+						uni.showToast({
+							icon: 'none',
+							title: this.msg
 						})
 					}
 				}
@@ -165,10 +177,17 @@
 <style  lang="scss" scoped>
 	$color: #F56C6C; // 提示文字颜色
 	.bjx-form-item {
-		margin-bottom: 10upx;
+		// margin-bottom: 10upx;
+		.item-label {
+			
+		}
 		.label-block{
 			.item-label {
+				display:flex;
 				margin-bottom: 2px;
+				.label-con{
+					flex:1;
+				}
 				.right {
 					float: right;
 				}
@@ -178,6 +197,7 @@
 			display:flex;
 			 align-items: flex-start;
 			.item-label {
+				display:flex;
 				margin-right: 10upx;
 			}
 			.item-con {

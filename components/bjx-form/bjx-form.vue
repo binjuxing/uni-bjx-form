@@ -22,7 +22,7 @@
 					return {}
 				}
 			},
-			// 提示模式 1. out 弹框提提示 2.in item 页面内 item 文字提示
+			// 提示模式 1. out 弹框提提示 2.in item 页面内 item 文字提示 3 msg 消息框提示
 			msgType: {
 				type: String,
 				default: 'out'
@@ -64,7 +64,7 @@
 					if(vb && !bol) {
 						vb = false
 					}
-					if(this.msgType == 'out' && !bol) {
+					if(this.msgType != 'in' && !bol) {
 						break
 					}
 				}
